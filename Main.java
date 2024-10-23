@@ -13,7 +13,7 @@ public class Main {
     {
         Board board= new Board();
         Scanner scan= new Scanner(System.in);
-        int itr=0,ini=0,core_score=50;
+        int itr=0,moves=0;
         do{
             System.out.println("SCORE!:"+board.getScore());
             System.out.println(board);
@@ -30,33 +30,29 @@ public class Main {
             switch(commandAry[0])
             {
                 case "pos":
+                    moves++;
+                    int result;
                     if(itr==0)
-                    {
-                        board.arrangeBoard(x,y);
-                    }
+                        result=board.arrangeBoard(x,y);
                     else
+                        result=board.selectTile(x, y);
+                    if(result==-1)
                     {
-                        int result=board.selectTile(x, y);
-                        if(result==-1)
-                        {
-                            System.out.println(board);
-                            System.out.println("GAME OVER!");
-                            System.out.println("SCORE!:"+board.getScore());
-                            return;
-                        }
-                        else if(result==1)
-                        {
-                            ini++;
-                            
-                        }
-                        else if(result==2)
-                        {
-                            System.out.println("You win!");
-                            return;
-                        }
-                        
+                        System.out.println(board);
+                        System.out.println("GAME OVER!");
+                        System.out.println("SCORE!:"+board.getScore());
+                        System.out.println("Moves:"+moves);
+                        return;
                     }
-                    
+                    else if(result==2)
+                    {
+                        System.out.println("You win!");
+                        System.out.println("SCORE!:"+board.getScore());
+                        System.out.println("MOVES:"+moves);
+                        return;
+                    }
+                    else if(result==0)
+                        moves--;
                     break;
                 case "fl":
                     board.setFlag(x, y);

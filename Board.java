@@ -1,35 +1,45 @@
 import java.util.Random;
 
 class Board{
-    private int ROW=10;
-    private int COL=10;
-    private int bombTotalCount=10;
+    private int ROW;
+    private int COL;
+    private int bombTotalCount;
     private char[][] board;
     private byte[][] visible; // visible[x][y]==> 0 -> hidden  1-> visible 2-> flag
     private int[][] bombsCoordinates;  //when game is over needed to show where all the bombs positioned. 
                                         // stores coordinates x y values for all bombs.
-    private int visibleTileCount=0;
-    private int SCORE=0;
-    private char bombCharacter='B';
+    private int visibleTileCount;
+    private int SCORE;
+    private char bombCharacter;
 
-    private String inVisibleDenoter="?";
-    private String flagDenoter="##";
+    private String inVisibleDenoter;
+    private String flagDenoter;
     
 
     public Board()
     {
+        ROW=10;
+        COL=12;
+        bombTotalCount=10;
+        visibleTileCount=0;
+        SCORE=0;
+        bombCharacter='B';
+        inVisibleDenoter="?";
+        flagDenoter="##";
+
+
         board= new char[ROW][COL];
         visible= new byte[ROW][COL];
         bombsCoordinates=new int[bombTotalCount][2];
     }
 
     //runs initially for the first selection
-    public void arrangeBoard(int x,int y)
+    public int arrangeBoard(int x,int y)
     {
 
         setBomb(x,y); 
         setNumbers();
-        selectTile(x,y); 
+        return selectTile(x,y); 
     }
 
     private void setNumbers() {
@@ -47,7 +57,7 @@ class Board{
                         {
                             if(l!=i || k!=j)
                             {
-                                // System.out.println("hi"+l+k);
+                                
 
                                 if(l>=0 && k>=0 && l<ROW && k<COL && board[l][k]==bombCharacter)
                                         bombCount++;
@@ -192,7 +202,6 @@ class Board{
                 str+=(inVisibleDenoter+" \t");
             }
             str+='\n';
-            // System.out.println("\t---------------------------------------------------------------------------");
         }
         return str;
     }
