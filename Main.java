@@ -13,9 +13,9 @@ public class Main {
     {
         Board board= new Board();
         Scanner scan= new Scanner(System.in);
-        int itr=0,score=0,ini=0,core_score=50;
+        int itr=0,ini=0,core_score=50;
         do{
-        
+            System.out.println("SCORE!:"+board.getScore());
             System.out.println(board);
             System.out.print("command:");
             String command=scan.nextLine();
@@ -33,8 +33,6 @@ public class Main {
                     if(itr==0)
                     {
                         board.arrangeBoard(x,y);
-                        ini++;
-                        score+=core_score+10*ini;
                     }
                     else
                     {
@@ -43,13 +41,13 @@ public class Main {
                         {
                             System.out.println(board);
                             System.out.println("GAME OVER!");
-                            System.out.println("SCORE!:"+score);
+                            System.out.println("SCORE!:"+board.getScore());
                             return;
                         }
                         else if(result==1)
                         {
                             ini++;
-                            score+=core_score+10*ini;
+                            
                         }
                         else if(result==2)
                         {
@@ -58,7 +56,7 @@ public class Main {
                         }
                         
                     }
-                    System.out.println("SCORE!:"+score);
+                    
                     break;
                 case "fl":
                     board.setFlag(x, y);

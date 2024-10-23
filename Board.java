@@ -5,9 +5,11 @@ class Board{
     private int COL=10;
     private int bombTotalCount=10;
     private char[][] board;
-    private int[][] visible;
-    private int[][] bombsCoordinates;  //when game is over needed to show where all the bombs positioned
+    private byte[][] visible; // visible[x][y]==> 0 -> hidden  1-> visible 2-> flag
+    private int[][] bombsCoordinates;  //when game is over needed to show where all the bombs positioned. 
+                                        // stores coordinates x y values for all bombs.
     private int visibleTileCount=0;
+    private int SCORE=0;
     private char bombCharacter='B';
 
     private String inVisibleDenoter="?";
@@ -17,7 +19,7 @@ class Board{
     public Board()
     {
         board= new char[ROW][COL];
-        visible= new int[ROW][COL];
+        visible= new byte[ROW][COL];
         bombsCoordinates=new int[bombTotalCount][2];
     }
 
@@ -87,7 +89,7 @@ class Board{
                 xAxis=rand.nextInt(ROW);
                 yAxix=rand.nextInt(COL);
 
-            }while(board[xAxis][yAxix]==bombCharacter|| (xAxis==x && yAxix==y) || isNearToPosition(x,y,xAxis,yAxix));
+            }while(board[xAxis][yAxix]==bombCharacter||  isNearToPosition(x,y,xAxis,yAxix));
 
             board[xAxis][yAxix]=bombCharacter;
             bombsCoordinates[bombsGenerated][0]=xAxis;
@@ -101,11 +103,10 @@ class Board{
         {
             for(int j=y-1;j<=y+1;j++)
             {
-                if(i!=x || j!=y)
-                {
+                
                     if(i==xAxis && j==yAxix)
                         return true;
-                }
+                
             }
         }
         return false;
@@ -133,7 +134,7 @@ class Board{
                 return -1;
             }
         expandBoard(x,y);
-            System.out.println("visible:"+visibleTileCount);
+            SCORE=visibleTileCount*10;
         if(visibleTileCount+bombTotalCount==ROW*COL)
             return 2;
         return 1;
@@ -214,6 +215,11 @@ class Board{
         else if(visible[x][y]==2)
             visible[x][y]=0;
         
+    }
+
+    public int getScore()
+    {
+        return this.SCORE;
     }
 
 
