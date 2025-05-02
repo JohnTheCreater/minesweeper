@@ -25,18 +25,16 @@ public class Main {
                 System.out.println("enter valid inputs!");
                 continue;
             }
-            int x=Integer.parseInt(commandAry[1]);
-            int y=Integer.parseInt(commandAry[2]);
+            int x = Integer.parseInt(commandAry[1]);
+            int y = Integer.parseInt(commandAry[2]);
+            if(itr == 0)
+                    board.arrangeBoard(x,y);
             switch(commandAry[0])
             {
                 case "pos":
                     moves++;
-                    int result;
-                    if(itr==0)
-                        result=board.arrangeBoard(x,y);
-                    else
-                        result=board.selectTile(x, y);
-                    if(result==-1)
+                    int result =  board.selectTile(x, y);
+                    if(result == -1)
                     {
                         System.out.println(board);
                         System.out.println("GAME OVER!");
@@ -44,14 +42,14 @@ public class Main {
                         System.out.println("Moves:"+moves);
                         return;
                     }
-                    else if(result==2)
+                    else if(result == 2)
                     {
                         System.out.println("You win!");
                         System.out.println("SCORE!:"+board.getScore());
                         System.out.println("MOVES:"+moves);
                         return;
                     }
-                    else if(result==0)
+                    else if(result == 0)
                         moves--;
                     break;
                 case "fl":

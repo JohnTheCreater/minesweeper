@@ -34,12 +34,12 @@ class Board{
     }
 
     //runs initially for the first selection
-    public int arrangeBoard(int x,int y)
+    public void arrangeBoard(int x,int y)
     {
 
         setBomb(x,y); 
         setNumbers();
-        return selectTile(x,y); 
+        
     }
 
     private void setNumbers() {
@@ -58,28 +58,12 @@ class Board{
                             if(l!=i || k!=j)
                             {
                                 
-
-                                if(l>=0 && k>=0 && l<ROW && k<COL && board[l][k]==bombCharacter)
+                                if(l>=0 && k>=0 && l<ROW && k<COL && board[l][k] == bombCharacter)
                                         bombCount++;
                             }
                         }
                     }
-                // if(i-1>-1 && j-1>-1 && board[i-1][j-1]==bombCharacter)
-                //     bombCount++;
-                // if(i-1>-1 && board[i-1][j]==bombCharacter)
-                //     bombCount++;
-                // if(i-1>-1 && j+1<COL && board[i-1][j+1]==bombCharacter)
-                //     bombCount++;
-                // if(j-1>-1 && board[i][j-1]==bombCharacter)
-                //     bombCount++;
-                // if(j+1<COL && board[i][j+1]==bombCharacter)
-                //     bombCount++;
-                // if(j-1>-1&& i+1<ROW && board[i+1][j-1]==bombCharacter)
-                //     bombCount++;
-                // if(i+1<ROW && board[i+1][j]==bombCharacter)
-                //     bombCount++;
-                // if(i+1<ROW && j+1<COL &&board[i+1][j+1]==bombCharacter)
-                //     bombCount++;
+               System.out.print(bombCount+" ");
 
                 board[i][j]=(char)(bombCount+48);
                 }
@@ -93,13 +77,13 @@ class Board{
         Random rand= new Random();
         int xAxis,yAxix,bombsGenerated=0;
 
-        while(bombsGenerated<bombTotalCount)
+        while(bombsGenerated < bombTotalCount)
         {
             do{
-                xAxis=rand.nextInt(ROW);
-                yAxix=rand.nextInt(COL);
+                xAxis = rand.nextInt(ROW);
+                yAxix = rand.nextInt(COL);
 
-            }while(board[xAxis][yAxix]==bombCharacter||  isNearToPosition(x,y,xAxis,yAxix));
+            }while( board[xAxis][yAxix]==bombCharacter||  isNearToPosition(x,y,xAxis,yAxix) );
 
             board[xAxis][yAxix]=bombCharacter;
             bombsCoordinates[bombsGenerated][0]=xAxis;
@@ -109,12 +93,12 @@ class Board{
     }
 
     private boolean isNearToPosition(int x, int y,int xAxis,int yAxix) {
-        for(int i=x-1;i<=x+1;i++)
+        for(int i=x-1;i <= x+1;i++)
         {
-            for(int j=y-1;j<=y+1;j++)
+            for(int j=y-1;j <= y+1;j++)
             {
                 
-                    if(i==xAxis && j==yAxix)
+                    if(i == xAxis && j == yAxix)
                         return true;
                 
             }
@@ -125,27 +109,27 @@ class Board{
     //selecting the tile
     public int selectTile(int x,int y)
     {
-        if(x<0 || y<0 || x>=ROW || y>=COL)
+        if(x < 0 || y < 0 || x >= ROW || y >= COL)
         {
             System.out.println("please enter valid position!");
             return 0;
         }
 
 
-        if(visible[x][y]==1 || visible[x][y]==2)
+        if(visible[x][y] == TileState.VISIBLE || visible[x][y] == TileState.FLAG_PLACED)
                 return 0;
         
-        if(board[x][y]==bombCharacter)
+        if(board[x][y] == bombCharacter)
             {
                 for(int i=0;i<bombTotalCount;i++)
                 {
-                    visible[bombsCoordinates[i][0]][bombsCoordinates[i][1]]=1;
+                    visible[bombsCoordinates[i][0]][bombsCoordinates[i][1]] = TileState.VISIBLE;
                 }
                 return -1;
             }
         expandBoard(x,y);
             SCORE=visibleTileCount*10;
-        if(visibleTileCount+bombTotalCount==ROW*COL)
+        if(visibleTileCount+bombTotalCount == ROW*COL)
             return 2;
         return 1;
     }
@@ -153,31 +137,26 @@ class Board{
     private void expandBoard(int x, int y) {
         if(x<0 || y<0 || x>=ROW ||y>=COL)
             return;
-        if(visible[x][y]==1)
+        if(visible[x][y] == TileState.VISIBLE)
             return;
-        visible[x][y]=1;
+        
+        visible[x][y] = TileState.VISIBLE;
         visibleTileCount++;
+
         if(board[x][y]>='1'&& board[x][y]<='8')
             return;
 
-        for(int i=x-1;i<=x+1;i++)
+        for(int i = x-1; i <= x+1; i++)
         {
-            for(int j=y-1;j<=y+1;j++)
+            for(int j=y-1 ; j<=y+1 ; j++)
             {
-                if(i!=x || j!=y)
+                if( i!=x || j!=y )
                 {
                     expandBoard(i, j);
                 }
             }
         }
-        // expandBoard(x-1, y-1);
-        // expandBoard(x-1, y);
-        // expandBoard(x-1, y+1);
-        // expandBoard(x, y-1);
-        // expandBoard(x, y+1);
-        // expandBoard(x+1, y-1);
-        // expandBoard(x+1, y);
-        // expandBoard(x+1, y+1);
+     
         
     }
 
@@ -194,9 +173,9 @@ class Board{
             str+=i+"\t";
             for(int j=0;j<COL;j++)
             {
-                if(visible[i][j]==1)
+                if(visible[i][j]== TileState.VISIBLE)
                 str+=((board[i][j]=='0'?'.':board[i][j])+"\t");
-                else if(visible[i][j]==2)
+                else if(visible[i][j]== TileState.FLAG_PLACED)
                     str+=(flagDenoter+" \t");
                 else
                 str+=(inVisibleDenoter+" \t");
@@ -219,10 +198,10 @@ class Board{
             return;
         }
 
-        if(visible[x][y]==0)
-            visible[x][y]=2;  
-        else if(visible[x][y]==2)
-            visible[x][y]=0;
+        if(visible[x][y]== TileState.HIDDEN)
+            visible[x][y]= TileState.FLAG_PLACED;  
+        else if(visible[x][y]== TileState.FLAG_PLACED)
+            visible[x][y]= TileState.HIDDEN;
         
     }
 
